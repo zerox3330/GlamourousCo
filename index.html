@@ -29,6 +29,59 @@
       <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
       <!-- owl stylesheets -->
       <link href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.css" rel="stylesheet" />
+      <style>
+         /* File Upload Pop-up */
+.file-upload-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+}
+
+.file-upload-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+  height: 60%;
+  padding: 40px;
+  background-color: #fff;
+  border: 2px solid #536dac;
+  border-radius: 12px;
+}
+.button-wrapper {
+  display: flex;
+  flex-direction: row; /* Display buttons horizontally */
+  align-items: center; /* Center buttons vertically */
+  justify-content: center; /* Center buttons horizontally */
+  height: 100%;
+}
+
+button {
+  background-color: lightblue; /* Light blue background */
+  color: white; /* White text */
+  padding: 15px 30px; /* Increase size */
+  margin: 10px; /* Add some margin */
+  margin-bottom: 10px; /* Push buttons up */
+  font-size: 1.2em; /* Increase font size */
+  border: 2px solid blue; /* Blue border */
+  border-radius: 12px; /* Rounded corners */
+  cursor: pointer;
+}
+         
+button:hover {
+  background-color: blue; /* Darker blue on hover */
+  color: white; /* White text on hover */
+}
+
+         
+      </style>
+      
    </head>
    <body>
       <!-- header section start -->
@@ -302,6 +355,18 @@
          </div>
       </div>
       <!-- contact section end -->
+      <!-- File Upload Modal -->
+<div id="fileUploadModal" class="file-upload-modal">
+  <div class="file-upload-content">
+    <h3>Upload a File</h3>
+    <input type="file" id="fileInput">
+    <div class="button-wrapper">
+      <button onclick="submitFile()">Upload</button>
+      <button id="cancelButton">Cancel</button>
+    </div>
+  </div>
+</div>
+
       <!-- footer section start -->
       <div class="footer_section layout_padding">
          <div class="container">
@@ -372,7 +437,7 @@
       <!---Botpress -->
       <script src="https://cdn.botpress.cloud/webchat/v2.1/inject.js"></script>
       <script src="https://mediafiles.botpress.cloud/a8c9b878-c02f-468f-8d21-4f5eb3bdd883/webchat/v2.1/config.js"></script>
-      <script>window.botpressWebChat.onEvent = function (event) {
+      <script> window.botpressWebChat.onEvent = function (event) {
   if (event.type === "MESSAGE_RECEIVED") {
     console.log("A new message was received!");
     if (event.payload.text === "You can choose a file") {
@@ -391,8 +456,7 @@
           window.botpressWebChat.sendPayload({
             type: 'trigger',
             payload: {
-              title: title,
-              content: fileContent
+              action:'file_uploaded'
             }
           });
         }
